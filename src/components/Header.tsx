@@ -9,31 +9,31 @@ const Header = () => {
             CRM
           </h1>
           <span className="text-muted-foreground text-sm font-display font-medium">
-            Editorial Workspace
+            Панель управления
           </span>
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
           <a href="#" className="text-foreground font-display font-medium micro-lift">
-            Dashboard
+            Панель
           </a>
           <a href="#" className="text-muted-foreground font-display font-medium micro-lift hover:text-foreground">
-            Analytics
+            Аналитика
           </a>
           <a href="#" className="text-muted-foreground font-display font-medium micro-lift hover:text-foreground">
-            Team
+            Команда
           </a>
           <a href="#" className="text-muted-foreground font-display font-medium micro-lift hover:text-foreground">
-            Settings
+            Настройки
           </a>
         </nav>
 
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" className="font-display font-bold">
-            Profile
+            Профиль
           </Button>
           <Button className="btn-primary">
-            New Order
+            Новый заказ
           </Button>
         </div>
       </div>

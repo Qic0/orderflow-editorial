@@ -10,6 +10,8 @@ interface KanbanColumnProps {
   };
   orders: Order[];
   onMoveOrder: (orderId: string, fromColumn: ColumnType, toColumn: ColumnType) => void;
+  onDragOver: (e: React.DragEvent) => void;
+  onDrop: (e: React.DragEvent, toColumn: ColumnType) => void;
 }
 
 const getColumnStatusColor = (columnId: ColumnType) => {
@@ -22,21 +24,25 @@ const getColumnStatusColor = (columnId: ColumnType) => {
   return colors[columnId];
 };
 
-const KanbanColumn = ({ column, orders, onMoveOrder }: KanbanColumnProps) => {
+const KanbanColumn = ({ column, orders, onMoveOrder, onDragOver, onDrop }: KanbanColumnProps) => {
   return (
-    <div className="kanban-column">
+    <div 
+      className="kanban-column"
+      onDragOver={onDragOver}
+      onDrop={(e) => onDrop(e, column.id)}
+    >
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="font-display font-bold text-lg tracking-tight mb-2">
             {column.title}
           </h3>
           <Badge variant="secondary" className={`${getColumnStatusColor(column.id)} font-display font-bold`}>
-            {column.count} {column.count === 1 ? 'order' : 'orders'}
+            {column.count} {column.count === 1 ? 'заказ' : 'заказов'}
           </Badge>
         </div>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 min-h-[200px]">
         {orders.map(order => (
           <OrderCard
             key={order.id}
@@ -48,7 +54,7 @@ const KanbanColumn = ({ column, orders, onMoveOrder }: KanbanColumnProps) => {
         
         {orders.length === 0 && (
           <div className="text-center py-12 text-muted-foreground">
-            <p className="font-body text-base">No orders in this column</p>
+            <p className="font-body text-base">Нет заказов в этой колонке</p>
           </div>
         )}
       </div>
