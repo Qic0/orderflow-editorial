@@ -9,6 +9,9 @@ interface OrderCardProps {
   order: Order;
   columnId: ColumnType;
   onMoveOrder: (orderId: string, fromColumn: ColumnType, toColumn: ColumnType) => void;
+  onDragStart?: (orderId: string) => void;
+  onDragEnd?: () => void;
+  isDragging?: boolean;
 }
 
 const getPriorityColor = (priority: Order['priority']) => {
@@ -45,7 +48,14 @@ const formatDate = (dateString: string) => {
   }).format(new Date(dateString));
 };
 
-const OrderCard = ({ order, columnId, onMoveOrder }: OrderCardProps) => {
+const OrderCard = ({ 
+  order, 
+  columnId, 
+  onMoveOrder, 
+  onDragStart, 
+  onDragEnd, 
+  isDragging 
+}: OrderCardProps) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const handleDoubleClick = () => {
@@ -64,16 +74,24 @@ const OrderCard = ({ order, columnId, onMoveOrder }: OrderCardProps) => {
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('text/plain', order.id);
     e.dataTransfer.setData('application/column', columnId);
+    onDragStart?.(order.id);
+  };
+
+  const handleDragEnd = () => {
+    onDragEnd?.();
   };
 
   return (
     <>
       <Card 
-        className="kanban-card group cursor-pointer hover:shadow-lg transition-all duration-200"
+        className={`kanban-card group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+          isDragging ? 'opacity-50 scale-95 rotate-3 shadow-2xl' : 'hover:shadow-lg'
+        }`}
         onDoubleClick={handleDoubleClick}
         onClick={handleClick}
         draggable
         onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
       >
         <div className="space-y-3">
           <div className="flex items-start justify-between">

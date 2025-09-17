@@ -21,6 +21,13 @@ export interface Order {
 export type ColumnType = 'new' | 'progress' | 'review' | 'done';
 
 const KanbanBoard = () => {
+  const [columnTitles, setColumnTitles] = useState({
+    new: 'Новые заказы',
+    progress: 'В работе', 
+    review: 'На проверке',
+    done: 'Выполнено'
+  });
+
   const [orders, setOrders] = useState<Record<ColumnType, Order[]>>({
     new: [
       {
@@ -109,12 +116,21 @@ const KanbanBoard = () => {
     ]
   });
 
+  const [draggedOrder, setDraggedOrder] = useState<string | null>(null);
+
   const columns = [
-    { id: 'new' as ColumnType, title: 'Новые заказы', count: orders.new.length },
-    { id: 'progress' as ColumnType, title: 'В работе', count: orders.progress.length },
-    { id: 'review' as ColumnType, title: 'На проверке', count: orders.review.length },
-    { id: 'done' as ColumnType, title: 'Выполнено', count: orders.done.length }
+    { id: 'new' as ColumnType, title: columnTitles.new, count: orders.new.length },
+    { id: 'progress' as ColumnType, title: columnTitles.progress, count: orders.progress.length },
+    { id: 'review' as ColumnType, title: columnTitles.review, count: orders.review.length },
+    { id: 'done' as ColumnType, title: columnTitles.done, count: orders.done.length }
   ];
+
+  const updateColumnTitle = (columnId: ColumnType, newTitle: string) => {
+    setColumnTitles(prev => ({
+      ...prev,
+      [columnId]: newTitle
+    }));
+  };
 
   const moveOrder = (orderId: string, fromColumn: ColumnType, toColumn: ColumnType) => {
     setOrders(prev => {
@@ -129,6 +145,14 @@ const KanbanBoard = () => {
     });
   };
 
+  const handleDragStart = (orderId: string) => {
+    setDraggedOrder(orderId);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedOrder(null);
+  };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
@@ -141,6 +165,7 @@ const KanbanBoard = () => {
     if (fromColumn && fromColumn !== toColumn) {
       moveOrder(orderId, fromColumn, toColumn);
     }
+    setDraggedOrder(null);
   };
 
   return (
@@ -165,6 +190,10 @@ const KanbanBoard = () => {
               onMoveOrder={moveOrder}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
+              onUpdateColumnTitle={updateColumnTitle}
+              draggedOrder={draggedOrder}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
             />
           ))}
         </div>
