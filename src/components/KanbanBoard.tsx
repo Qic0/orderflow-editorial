@@ -34,7 +34,7 @@ const KanbanBoard = () => {
         id: '1',
         title: 'Редизайн веб-сайта',
         client: 'ТехКорп',
-        value: 450000,
+        value: 48850000,
         priority: 'high',
         assignee: 'Анна Королева',
         dueDate: '2024-01-15',
