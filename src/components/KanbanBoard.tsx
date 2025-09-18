@@ -32,13 +32,13 @@ const KanbanBoard = () => {
     new: [
       {
         id: '1',
-        title: 'Редизайн веб-сайта',
-        client: 'ТехКорп',
-        value: 48850000,
+        title: 'Изготовление кухни',
+        client: 'Битаров Вячеслав',
+        value: 4885000,
         priority: 'high',
         assignee: 'Анна Королева',
         dueDate: '2024-01-15',
-        description: 'Полный редизайн корпоративного сайта с современным UX',
+        description: 'Изготовление кухни в совеременном стиле',
         createdDate: '2024-01-01',
         phone: '+7 (495) 123-45-67',
         email: 'contact@techcorp.ru',
